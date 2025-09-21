@@ -1,0 +1,22 @@
+name: Weekly Training & Deploy
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'   # every Sunday 6 AM UTC
+  workflow_dispatch:
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: python data_fetch.py
+      - run: python train_model.py
+      - run: git config --global user.email "actions@github.com"
+      - run: git config --global user.name "github-actions"
+      - run: git add data/ && git commit -m "Auto-update model + data [skip ci]" || echo "No changes"
+      - run: git push
