@@ -1,36 +1,46 @@
-# AGI Path Predictor v1.0.0 – Initial Public Release
+# AGI Path Predictor (Prototype)
 
-Welcome to the first public release of **AGI Path Predictor**, a data-driven framework for estimating timelines to Artificial General Intelligence (AGI).
+A lightweight Streamlit dashboard that explores a proxy for AGI progress by combining AI benchmark performance (currently synthetic ARC-AGI scores) with sentiment analysis from X (Twitter) posts related to Grok, xAI, and Elon Musk.
 
-## Overview
-This repository provides:
-- A modular prediction pipeline combining historical technology trends, expert surveys, and compute scaling laws
-- Datasets: curated timelines from Metaculus, AI Impacts, expert elicitations, and compute growth metrics
-- Models: baseline implementations (extrapolation, Bayesian updating, simple neural forecasts)
-- Visualization tools for probability distributions and sensitivity analysis
-- Scripts for updating predictions with new data
+A RandomForest model is trained on historical trends to predict short-term benchmark progress based on recent performance delta and public sentiment.
 
-## Key Features
-- **Trend extrapolation** from biological anchors and compute scaling
-- **Expert aggregation** with weighting and confidence calibration
-- **Monte Carlo sampling** for probabilistic timelines
-- Easy-to-extend structure for adding new models or data sources
+**This is an early-stage prototype / proof-of-concept.** It is **not** a rigorous AGI timeline forecaster. The goal is to experiment with leading indicators (hype/sentiment) that might correlate with benchmark leaps.
 
-## Current Predictions (as of February 2026)
-- Median estimated AGI arrival: **2031**
-- 25th–75th percentile: **2028–2038**
-- Probability of AGI by 2030: **~42%**
+## Features (Current)
+- Synthetic monthly ARC-AGI benchmark time series
+- Sentiment analysis of recent X posts (via TextBlob)
+- RandomForestRegressor for one-step-ahead progress prediction
+- Interactive Streamlit app with visualizations and "what-if" sliders
+- Docker support
 
-> Note: These are baseline model outputs and will evolve as new data and models are added.
+## Roadmap / Future Work
+- Replace synthetic data with real ARC-AGI leaderboard history
+- Integrate additional benchmarks (MMLU, BIG-Bench, etc.)
+- Switch to robust X data source (official API or academic datasets)
+- Expand features: compute trends, publication volume, investment data
+- Advanced modeling: time-series (Prophet/LSTM), multi-step, probabilistic forecasts
+- True timeline extrapolation (scaling laws, biological anchors, Monte Carlo)
 
-## Getting Started
+## Quick Start
 ```bash
-git clone https://github.com/Hallotoshi/AGI-Path-Predictor.git
-cd AGI-Path-Predictor
 pip install -r requirements.txt
-python run_baseline.py
+python data_fetch.py   # generates CSVs (note: snscrape may fail due to X API changes)
+python train_model.py
+streamlit run app.py
 ```
 
-Contributions, issues, and new data sources are very welcome!
+Or with Docker:
+```bash
+docker build -t agi-predictor .
+docker run -p 8501:8501 agi-predictor
+```
 
-Thank you for checking out the project.
+## Limitations
+- Data fetching relies on deprecated `snscrape` (planned migration)
+- Tiny dataset → limited predictive power
+- Single-step prediction only
+- No probabilistic timelines yet
+
+Contributions welcome! Open issues for bugs, ideas, or the roadmap items above.
+
+Licensed under MIT (see LICENSE).
